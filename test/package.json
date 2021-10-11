@@ -1,0 +1,19 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "debug.js",
+  "scripts": {
+    "debug": "node debug.js",
+    "install:lib": "node install_lib.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0"
+  },
+  "dependencies": {
+    "ethers": "^5.4.7"
+  }
+}
