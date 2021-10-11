@@ -3,3 +3,4 @@ build_helper
 webpack
 
 *.tgz
+test

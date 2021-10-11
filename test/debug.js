@@ -1,12 +1,12 @@
 const { use, POSClient } = require("@maticnetwork/maticjs");
-const web3Plugin = require("@maticnetwork/maticjs-web3");
+const { Web3ClientPlugin } = require("@maticnetwork/maticjs-web3")
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 const { user1, rpc, pos } = require("./config");
 
 const dotenv = require('dotenv');
 dotenv.config();
 
-use(web3Plugin);
+use(Web3ClientPlugin);
 const from = process.env.FROM || user1.address;
 
 const execute = async () => {

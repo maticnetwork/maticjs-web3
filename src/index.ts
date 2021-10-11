@@ -1,8 +1,10 @@
 import { IPlugin } from "@maticnetwork/maticjs";
 import { Web3Client } from "./web3";
 
-export class Web3Plugin implements IPlugin {
+export class Web3ClientPlugin implements IPlugin {
     setup(matic) {
         matic.Web3Client = Web3Client;
     }
 }
+
+export default Web3ClientPlugin;

@@ -2,7 +2,8 @@
   "name": "@maticnetwork/maticjs-web3",
   "version": "0.1.0",
   "description": "web3.js plugin for matic.js",
-  "main": "index.js",
+  "main": "dist/npm.export.js",
+  "types": "dist/ts/index.d.ts",
   "scripts": {
     "build": "npm run build:dev",
     "build:link": "npm run build && npm link",
@@ -26,7 +27,7 @@
   },
   "homepage": "https://github.com/maticnetwork/maticjs-web3#readme",
   "dependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.1",
+    "@maticnetwork/maticjs": "^3.0.0-beta.2",
     "web3": "^1.6.0"
   },
   "devDependencies": {
