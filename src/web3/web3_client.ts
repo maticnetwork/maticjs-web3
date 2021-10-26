@@ -13,6 +13,7 @@ export class Web3Client extends BaseWeb3Client {
         this.web3_ = new Web3(provider);
     }
 
+
     read(config: ITransactionConfig) {
         return this.web3_.eth.call(config);
     }
@@ -127,6 +128,10 @@ export class Web3Client extends BaseWeb3Client {
 
     encodeParameters(params: any[], types: any[]) {
         return this.web3_.eth.abi.encodeParameters(types, params);
+    }
+
+    decodeParameters(hexString, types: any[]) {
+        return this.web3_.eth.abi.decodeParameters(types, hexString) as any;
     }
 
     etheriumSha3(...value) {

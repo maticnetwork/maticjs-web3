@@ -4,7 +4,7 @@ import { doNothing } from "../helpers";
 
 export class EthMethod extends BaseContractMethod {
 
-    constructor(logger: Logger, private method: TransactionObject<any>) {
+    constructor(public address, logger: Logger, private method: TransactionObject<any>) {
         super(logger);
     }
 
