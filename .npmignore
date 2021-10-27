@@ -4,3 +4,4 @@ webpack
 
 *.tgz
 test
+*.env
