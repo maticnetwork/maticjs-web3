@@ -1,5 +1,7 @@
 const path = require('path')
 const copyPlugin = require('copy-webpack-plugin')
+const SmartBannerPlugin = require('smart-banner-webpack-plugin');
+const banner = require('./licence');
 
 const libraryName = 'matic-web3'
 exports.libraryName = libraryName;
@@ -45,5 +47,6 @@ exports.default = {
         new copyPlugin({
             patterns: [{ from: path.resolve('build_helper', 'npm.export.js'), to: '' }],
         }),
+        new SmartBannerPlugin(banner)
     ],
 }

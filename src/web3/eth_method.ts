@@ -17,7 +17,11 @@ export class EthMethod extends BaseContractMethod {
             gasPrice: config.gasPrice,
             nonce: config.nonce,
             to: config.to,
-            value: config.value
+            value: config.value,
+            maxFeePerGas: config.maxFeePerGas,
+            maxPriorityFeePerGas: config.maxPriorityFeePerGas,
+            type: config.type,
+            hardfork: config.hardfork
         } as Tx;
     }
 

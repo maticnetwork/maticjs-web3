@@ -14,14 +14,15 @@
     "deploy": "npm run build:dev && npm run build:prod",
     "prepublishOnly": "npm run deploy",
     "lint": "tslint src/**/*.ts",
-    "lint:fix": "tslint src/**/*.ts --fix"
+    "lint:fix": "tslint src/**/*.ts --fix",
+    "test": "npm run build:pack && cd test && npm run install:lib:test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maticnetwork/maticjs-web3.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/maticnetwork/maticjs-web3/issues"
   },
@@ -30,10 +31,10 @@
     "web3": "^1.6.0"
   },
   "peerDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.5"
+    "@maticnetwork/maticjs": "^3.0.0-beta.9"
   },
   "devDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.6",
+    "@maticnetwork/maticjs": "^3.0.0-beta.9",
     "@types/web3": "1.0.19",
     "copy-webpack-plugin": "^6.1.1",
     "cross-env": "^7.0.3",
