@@ -1,4 +1,5 @@
 import { BaseContractMethod, Logger, ITransactionConfig } from "@maticnetwork/maticjs";
+import Web3 from "web3";
 import { TransactionObject, Tx } from "web3/eth/types";
 import { doNothing } from "../helpers";
 
@@ -10,7 +11,7 @@ export class EthMethod extends BaseContractMethod {
 
     private toConfig_(config: ITransactionConfig = {}) {
         return {
-            chainId: config.chainId,
+            chainId: Web3.utils.toHex(config.chainId),
             data: config.data,
             from: config.from,
             gas: config.gasLimit,
