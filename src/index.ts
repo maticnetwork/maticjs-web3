@@ -7,4 +7,6 @@ export class Web3ClientPlugin implements IPlugin {
     }
 }
 
+export * from "./web3";
+
 export default Web3ClientPlugin;

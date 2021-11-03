@@ -1,6 +1,9 @@
 import { erc20, from, posClient, to } from "./client";
 import { expect } from 'chai'
 import BN from "bn.js";
+import { EthMethod } from "@maticnetwork/maticjs-web3";
+import { ITransactionConfig } from "@maticnetwork/maticjs";
+import { Tx } from "web3/eth/types";
 
 
 describe('ERC20', () => {
@@ -42,6 +45,51 @@ describe('ERC20', () => {
         const exitTxHash = '0x95844235073da694e311dc90476c861e187c36f86a863a950534c9ac2b7c1a48';
         const isExited = await erc20Parent.isWithdrawExited('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
         expect(isExited).to.be.an('boolean').equal(true);
+    })
+
+    it('check for config props', async () => {
+        const contract = await erc20Parent.getContract();
+        const method = contract.method("transfer", to, 10) as EthMethod
+        const txConfig = {
+            from: '0xfd71dc9721d9ddcf0480a582927c3dcd42f3064c',
+            maxPriorityFeePerGas: 2000000000,
+            chainId: 5,
+            gasLimit: 26624,
+            nonce: 2980,
+            type: '0x02',
+            maxFeePerGas: 20,
+            data: 'ddd',
+            gasPrice: 12345,
+            hardfork: 'true',
+            to: '12233',
+            value: 1245
+        } as ITransactionConfig;
+
+        const config = method['toConfig_'](txConfig);
+
+        const configLength = Object.keys(config).length;
+        const txConfigLength = Object.keys(txConfig).length;
+
+        // console.log("configLength", config, configLength,
+        //     "txConfigLength", txConfig, txConfigLength);
+
+        expect(configLength).equal(
+            txConfigLength
+        )
+
+        expect(config.from).equal(txConfig.from);
+        expect(config['maxPriorityFeePerGas']).equal(txConfig.maxPriorityFeePerGas);
+        expect(config.chainId).equal(txConfig.chainId);
+        expect(config.gas).equal(txConfig.gasLimit);
+        expect(config.nonce).equal(txConfig.nonce);
+        expect(config.type).equal(txConfig.type);
+        expect(config.maxFeePerGas).equal(txConfig.maxFeePerGas);
+        expect(config.data).equal(txConfig.data);
+        expect(config.gasPrice).equal(txConfig.gasPrice);
+        expect(config.hardfork).equal(txConfig.hardfork);
+        expect(config.to).equal(txConfig.to);
+        expect(config.value).equal(txConfig.value);
+
     })
 
     it('child transfer returnTransaction with erp1159', async () => {
@@ -89,12 +137,6 @@ describe('ERC20', () => {
         expect(result).to.have.property('chainId', '0x5');
 
     });
-
-    // it('isDeposited', async () => {
-    //     const txHash = '0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258';
-    //     const isExited = await posClient.isDeposited(txHash);
-    //     expect(isExited).to.be.an('boolean').equal(true);
-    // })
 
     it('child transfer', async () => {
         const oldBalance = await erc20Child.getBalance(to);
