@@ -1,7 +1,8 @@
-node-modules
+node_modules
 build_helper
 webpack
+src
+test
 
 *.tgz
-test
 *.env
