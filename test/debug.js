@@ -37,7 +37,10 @@ const execute = async () => {
   const goerliERC20Token = client.erc20(goerliERC20, true);
 
   // return console.log(await client.isDeposited('0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258'));
-
+  const isCheckpointed = await mumbaiERC20Token.isWithdrawExited(
+    '0xbb9051c6a55ad82122835dd6b656f62f2bf905452e844172f9d8ba6a98137f8c'
+  );
+  return console.log("isWithdrawExited", isCheckpointed);
 
   const balance = await mumbaiERC20Token.getBalance(
     from
