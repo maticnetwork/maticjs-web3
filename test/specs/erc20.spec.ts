@@ -1,9 +1,10 @@
-import { erc20, from, posClient, to } from "./client";
+import { erc20, from, posClient, posClientForTo, to } from "./client";
 import { expect } from 'chai'
 import BN from "bn.js";
 import { EthMethod } from "@maticnetwork/maticjs-web3";
 import { ITransactionConfig } from "@maticnetwork/maticjs";
 import { Tx } from "web3/eth/types";
+import Web3 from "web3";
 
 
 describe('ERC20', () => {
@@ -56,7 +57,7 @@ describe('ERC20', () => {
             chainId: 5,
             gasLimit: 26624,
             nonce: 2980,
-            type: '0x02',
+            type: 2,
             maxFeePerGas: 20,
             data: 'ddd',
             gasPrice: 12345,
@@ -79,10 +80,14 @@ describe('ERC20', () => {
 
         expect(config.from).equal(txConfig.from);
         expect(config['maxPriorityFeePerGas']).equal(txConfig.maxPriorityFeePerGas);
-        expect(config.chainId).equal(txConfig.chainId);
+        expect(config.chainId).equal(
+            Web3.utils.toHex(txConfig.chainId)
+        );
         expect(config.gas).equal(txConfig.gasLimit);
         expect(config.nonce).equal(txConfig.nonce);
-        expect(config.type).equal(txConfig.type);
+        expect(config.type).equal(
+            Web3.utils.toHex(txConfig.type)
+        );
         expect(config.maxFeePerGas).equal(txConfig.maxFeePerGas);
         expect(config.data).equal(txConfig.data);
         expect(config.gasPrice).equal(txConfig.gasPrice);
@@ -95,7 +100,7 @@ describe('ERC20', () => {
     it('child transfer returnTransaction with erp1159', async () => {
         const amount = 10;
         try {
-            const result = await erc20Child.transfer(to, amount, {
+            const result = await erc20Child.transfer(amount, to, {
                 maxFeePerGas: 10,
                 maxPriorityFeePerGas: 10,
                 returnTransaction: true
@@ -112,19 +117,19 @@ describe('ERC20', () => {
 
     it('child transfer returnTransaction', async () => {
         const amount = 10;
-        const result = await erc20Child.transfer(to, amount, {
+        const result = await erc20Child.transfer(amount, to, {
             returnTransaction: true
         });
         console.log('result', result);
         expect(result).to.have.not.property('maxFeePerGas')
         expect(result).to.have.not.property('maxPriorityFeePerGas')
         expect(result).to.have.property('gasPrice')
-        expect(result).to.have.property('chainId', '0x13881');
+        expect(result).to.have.property('chainId', 80001);
     });
 
     it('parent transfer returnTransaction with erp1159', async () => {
         const amount = 10;
-        const result = await erc20Parent.transfer(to, amount, {
+        const result = await erc20Parent.transfer(amount, to, {
             maxFeePerGas: 20,
             maxPriorityFeePerGas: 20,
             returnTransaction: true
@@ -134,7 +139,7 @@ describe('ERC20', () => {
         expect(result).to.have.property('maxFeePerGas', 20)
         expect(result).to.have.property('maxPriorityFeePerGas', 20)
         expect(result).to.have.not.property('gasPrice')
-        expect(result).to.have.property('chainId', '0x5');
+        expect(result).to.have.property('chainId', 5);
 
     });
 
@@ -142,11 +147,11 @@ describe('ERC20', () => {
         const oldBalance = await erc20Child.getBalance(to);
         console.log('oldBalance', oldBalance);
         const amount = 10;
-        const result = await erc20Child.transfer(to, amount);
-        const txHash = await result.getTransactionHash();
+        let result = await erc20Child.transfer(amount, to);
+        let txHash = await result.getTransactionHash();
         expect(txHash).to.be.an('string');
         console.log('txHash', txHash);
-        const txReceipt = await result.getReceipt();
+        let txReceipt = await result.getReceipt();
         console.log("txReceipt", txReceipt);
 
         expect(txReceipt.transactionHash).equal(txHash);
@@ -174,6 +179,14 @@ describe('ERC20', () => {
         expect(newBalanceBig.toString()).equal(
             oldBalanceBig.add(new BN(amount)).toString()
         )
+
+        //transfer money back to user
+        await posClientForTo.init();
+        const erc20ChildToken = posClientForTo.erc20(erc20.child);
+
+        result = await erc20ChildToken.transfer(amount, to);
+        txHash = await result.getTransactionHash();
+        txReceipt = await result.getReceipt();
     });
 
     if (process.env.NODE_ENV !== 'test_all') return;

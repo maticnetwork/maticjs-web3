@@ -1,4 +1,4 @@
-import { BaseContractMethod, Logger, ITransactionConfig } from "@maticnetwork/maticjs";
+import { BaseContractMethod, Logger, ITransactionConfig, Converter } from "@maticnetwork/maticjs";
 import Web3 from "web3";
 import { TransactionObject, Tx } from "web3/eth/types";
 import { doNothing } from "../helpers";
@@ -9,9 +9,14 @@ export class EthMethod extends BaseContractMethod {
         super(logger);
     }
 
+    toHex(value) {
+        return value != null ? Web3.utils.toHex(value) : value;
+    }
+
     private toConfig_(config: ITransactionConfig = {}) {
+        const toHex = this.toHex;
         return {
-            chainId: Web3.utils.toHex(config.chainId),
+            chainId: toHex(config.chainId),
             data: config.data,
             from: config.from,
             gas: config.gasLimit,
@@ -21,7 +26,7 @@ export class EthMethod extends BaseContractMethod {
             value: config.value,
             maxFeePerGas: config.maxFeePerGas,
             maxPriorityFeePerGas: config.maxPriorityFeePerGas,
-            type: config['type'],
+            type: toHex(config.type),
             hardfork: config.hardfork
         } as Tx;
     }
