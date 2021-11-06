@@ -8,7 +8,7 @@ const from = user1.address;
 
 const execute = async () => {
 
-  return console.log(Converter.toHex('593390000'), new utils.BN('593390000').toString(16))
+  // return console.log(Converter.toHex('10'), new utils.BN('10').toString(16))
 
 
   const privateKey = user1.privateKey;
@@ -65,13 +65,22 @@ const execute = async () => {
   // const tx = await goerliERC721Token.depositMany(['70362948865848051982628883253610138761681237831617060123833093242173388773544'], from, {
   //   returnTransaction: true
   // });
-  setProofApi("https://apis.matic.network")
-  const tx = await goerliERC20Token.withdrawExitFaster(
-    '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3', {
-    returnTransaction: true
-  });
+  // setProofApi("https://apis.matic.network")
+  // const tx = await goerliERC20Token.withdrawExitFaster(
+  //   '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3', {
+  //   returnTransaction: true
+  // });
 
-  console.log('tx', tx);
+  // console.log('tx', tx);
+
+  const payload = await client.exitUtil.buildPayloadForExit(
+    '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3',
+    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+    false
+)
+return  //console.log("payload", payload, "length", payload.length);
+
+
   // // setProofApi("https://apis.matic.network")
   // // const tx = await goerliERC20Token.withdrawExit('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
   // console.log("txHash", await tx.getTransactionHash());
