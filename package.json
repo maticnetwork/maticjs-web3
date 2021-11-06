@@ -15,7 +15,8 @@
     "prepublishOnly": "npm run deploy",
     "lint": "tslint src/**/*.ts",
     "lint:fix": "tslint src/**/*.ts --fix",
-    "test": "npm run build:pack && cd test && npm run install:lib:test"
+    "test": "npm run build:pack && cd test && npm run install:lib:test",
+    "debug": "npm run build:pack && cd test && npm run install:lib:debug"
   },
   "repository": {
     "type": "git",
@@ -34,7 +35,7 @@
     "@maticnetwork/maticjs": "^3.0.0-beta.13"
   },
   "devDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.13",
+    "@maticnetwork/maticjs": "^3.0.0-beta.14",
     "@types/web3": "1.0.19",
     "copy-webpack-plugin": "^6.1.1",
     "cross-env": "^7.0.3",

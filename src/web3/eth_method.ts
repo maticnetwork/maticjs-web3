@@ -2,6 +2,7 @@ import { BaseContractMethod, Logger, ITransactionConfig, Converter } from "@mati
 import Web3 from "web3";
 import { TransactionObject, Tx } from "web3/eth/types";
 import { doNothing } from "../helpers";
+import { maticTxRequestConfigToWeb3 } from "../utils";
 
 export class EthMethod extends BaseContractMethod {
 
@@ -13,28 +14,10 @@ export class EthMethod extends BaseContractMethod {
         return value != null ? Web3.utils.toHex(value) : value;
     }
 
-    private toConfig_(config: ITransactionConfig = {}) {
-        const toHex = this.toHex;
-        return {
-            chainId: toHex(config.chainId),
-            data: config.data,
-            from: config.from,
-            gas: config.gasLimit,
-            gasPrice: config.gasPrice,
-            nonce: config.nonce,
-            to: config.to,
-            value: config.value,
-            maxFeePerGas: config.maxFeePerGas,
-            maxPriorityFeePerGas: config.maxPriorityFeePerGas,
-            type: toHex(config.type),
-            hardfork: config.hardfork
-        } as Tx;
-    }
-
     read<T>(tx: ITransactionConfig): Promise<T> {
         this.logger.log("sending tx with config", tx);
         return this.method.call(
-            this.toConfig_(tx)
+            maticTxRequestConfigToWeb3(tx) as any
         );
     }
 
@@ -48,7 +31,7 @@ export class EthMethod extends BaseContractMethod {
         setTimeout(() => {
             this.logger.log("sending tx with config", tx);
             this.method.send(
-                this.toConfig_(tx)
+                maticTxRequestConfigToWeb3(tx) as any
             ).once("transactionHash", result.onTransactionHash).
                 once("receipt", result.onReceipt).
                 on("error", result.onTxError).
@@ -58,7 +41,9 @@ export class EthMethod extends BaseContractMethod {
     }
 
     estimateGas(tx: ITransactionConfig): Promise<number> {
-        return this.method.estimateGas(tx as any);
+        return this.method.estimateGas(
+            maticTxRequestConfigToWeb3(tx) as any
+        );
     }
 
     encodeABI() {
