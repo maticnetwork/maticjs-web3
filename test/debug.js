@@ -1,4 +1,4 @@
-const { setProofApi, POSClient, use } = require("@maticnetwork/maticjs");
+const { setProofApi, POSClient, use, Converter, utils } = require("@maticnetwork/maticjs");
 const { Web3ClientPlugin } = require("@maticnetwork/maticjs-web3");
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
@@ -7,6 +7,10 @@ use(Web3ClientPlugin);
 const from = user1.address;
 
 const execute = async () => {
+
+  return console.log(Converter.toHex('593390000'), new utils.BN('593390000').toString(16))
+
+
   const privateKey = user1.privateKey;
   const mumbaiERC20 = pos.child.erc20;
   const goerliERC20 = pos.parent.erc20;
