@@ -3,7 +3,7 @@ import Web3 from "web3";
 import { Transaction } from "web3/eth/types";
 import { AbstractProvider } from "web3-core";
 import { doNothing } from "../helpers";
-import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionConfig, ITransactionData, ITransactionReceipt, Logger } from "@maticnetwork/maticjs";
+import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger } from "@maticnetwork/maticjs";
 import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx } from "../utils";
 
 export class Web3Client extends BaseWeb3Client {
@@ -15,13 +15,13 @@ export class Web3Client extends BaseWeb3Client {
     }
 
 
-    read(config: ITransactionConfig) {
+    read(config: ITransactionRequestConfig) {
         return this.web3_.eth.call(
             maticTxRequestConfigToWeb3(config)
         );
     }
 
-    write(config: ITransactionConfig) {
+    write(config: ITransactionRequestConfig) {
         const result = {
             onTransactionHash: (doNothing as any),
             onReceipt: doNothing,
@@ -49,7 +49,7 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.getGasPrice();
     }
 
-    estimateGas(config: ITransactionConfig) {
+    estimateGas(config: ITransactionRequestConfig) {
         return this.web3_.eth.estimateGas(
             maticTxRequestConfigToWeb3(config)
         );

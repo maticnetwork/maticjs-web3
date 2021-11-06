@@ -1,5 +1,4 @@
 import { BaseBigNumber } from "@maticnetwork/maticjs";
-import Web3 from "web3";
 import BN from "bn.js";
 
 export class MaticBigNumber extends BaseBigNumber {
@@ -7,14 +6,16 @@ export class MaticBigNumber extends BaseBigNumber {
 
     constructor(value) {
         super();
-        this.bn_ = Web3.utils.toBN(value);
+        this.bn_ = new BN(value);
+
+        // this.bn_.toString()
     }
 
     static isBN(value) {
         if (value instanceof MaticBigNumber) {
             return true;
         }
-        return Web3.utils.isBN(value);
+        return BN.isBN(value);
     }
 
     toString(base?) {

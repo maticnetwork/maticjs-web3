@@ -1,4 +1,4 @@
-import { BaseContractMethod, Logger, ITransactionConfig, Converter } from "@maticnetwork/maticjs";
+import { BaseContractMethod, Logger, ITransactionRequestConfig, Converter } from "@maticnetwork/maticjs";
 import Web3 from "web3";
 import { TransactionObject, Tx } from "web3/eth/types";
 import { doNothing } from "../helpers";
@@ -14,14 +14,14 @@ export class EthMethod extends BaseContractMethod {
         return value != null ? Web3.utils.toHex(value) : value;
     }
 
-    read<T>(tx: ITransactionConfig): Promise<T> {
+    read<T>(tx: ITransactionRequestConfig): Promise<T> {
         this.logger.log("sending tx with config", tx);
         return this.method.call(
             maticTxRequestConfigToWeb3(tx) as any
         );
     }
 
-    write(tx: ITransactionConfig) {
+    write(tx: ITransactionRequestConfig) {
         const result = {
             onTransactionHash: (doNothing as any),
             onReceipt: doNothing,
@@ -40,7 +40,7 @@ export class EthMethod extends BaseContractMethod {
         return result;
     }
 
-    estimateGas(tx: ITransactionConfig): Promise<number> {
+    estimateGas(tx: ITransactionRequestConfig): Promise<number> {
         return this.method.estimateGas(
             maticTxRequestConfigToWeb3(tx) as any
         );
