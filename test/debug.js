@@ -57,10 +57,10 @@ const execute = async () => {
   // );
   // return console.log("tokens", tokens);
 
-  // const tx = await goerliERC721Token.approveAll({
-  //   maxPriorityFeePerGas: 2000000000,
-  //   returnTransaction: true
-  // });
+  const tx = await goerliERC721Token.approveAll({
+    maxPriorityFeePerGas: 2000000000,
+    // returnTransaction: true
+  });
 
   // const tx = await goerliERC721Token.depositMany(['70362948865848051982628883253610138761681237831617060123833093242173388773544'], from, {
   //   returnTransaction: true
@@ -73,18 +73,18 @@ const execute = async () => {
 
   // console.log('tx', tx);
 
-  const payload = await client.exitUtil.buildPayloadForExit(
-    '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3',
-    '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-    false
-)
-return  //console.log("payload", payload, "length", payload.length);
+//   const payload = await client.exitUtil.buildPayloadForExit(
+//     '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3',
+//     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+//     false
+// )
+// return  //console.log("payload", payload, "length", payload.length);
 
 
   // // setProofApi("https://apis.matic.network")
   // // const tx = await goerliERC20Token.withdrawExit('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
-  // console.log("txHash", await tx.getTransactionHash());
-  // console.log("txReceipt", await tx.getReceipt());
+  console.log("txHash", await tx.getTransactionHash());
+  console.log("txReceipt", await tx.getReceipt());
 
   //txhash to plasma exit - 0x63aa095e0d6ee8698399b871daa202eb5522933e2d94c5929cf0fb86b6b0c628
   const tokenId = '60399350241383852757821046101235634991156913804166740995010931519407953501076'
