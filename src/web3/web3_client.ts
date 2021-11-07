@@ -3,7 +3,8 @@ import Web3 from "web3";
 import { Transaction } from "web3/eth/types";
 import { AbstractProvider } from "web3-core";
 import { doNothing } from "../helpers";
-import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionConfig, ITransactionData, ITransactionReceipt, Logger } from "@maticnetwork/maticjs";
+import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger } from "@maticnetwork/maticjs";
+import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx } from "../utils";
 
 export class Web3Client extends BaseWeb3Client {
     private web3_: Web3;
@@ -14,11 +15,13 @@ export class Web3Client extends BaseWeb3Client {
     }
 
 
-    read(config: ITransactionConfig) {
-        return this.web3_.eth.call(config);
+    read(config: ITransactionRequestConfig) {
+        return this.web3_.eth.call(
+            maticTxRequestConfigToWeb3(config)
+        );
     }
 
-    write(config: ITransactionConfig) {
+    write(config: ITransactionRequestConfig) {
         const result = {
             onTransactionHash: (doNothing as any),
             onReceipt: doNothing,
@@ -28,16 +31,7 @@ export class Web3Client extends BaseWeb3Client {
         setTimeout(() => {
             this.logger.log("sending tx with config", config);
             this.web3_.eth.sendTransaction(
-                {
-                    chainId: config.chainId,
-                    data: config.data,
-                    from: config.from,
-                    gas: config.gasLimit,
-                    gasPrice: config.gasPrice,
-                    nonce: config.nonce,
-                    to: config.to,
-                    value: config.value
-                }
+                maticTxRequestConfigToWeb3(config)
             ).once("transactionHash", result.onTransactionHash).
                 once("receipt", result.onReceipt).
                 on("error", result.onTxError).
@@ -55,9 +49,9 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.getGasPrice();
     }
 
-    estimateGas(config: ITransactionConfig) {
+    estimateGas(config: ITransactionRequestConfig) {
         return this.web3_.eth.estimateGas(
-            config
+            maticTxRequestConfigToWeb3(config)
         );
     }
 
@@ -71,35 +65,12 @@ export class Web3Client extends BaseWeb3Client {
 
     getTransaction(transactionHash: string) {
         return this.web3_.eth.getTransaction(transactionHash).then(data => {
-            return this.toTransaction(data);
+            return web3TxToMaticTx(data);
         });
     }
-
-    private toTransaction(data: Transaction) {
-        const tx: ITransactionData = data as any;
-        tx.transactionHash = data.hash;
-        return tx;
-    }
-
     getTransactionReceipt(transactionHash: string): Promise<ITransactionReceipt> {
         return this.web3_.eth.getTransactionReceipt(transactionHash).then(data => {
-            return {
-                blockHash: data.blockHash,
-                blockNumber: data.blockNumber,
-                contractAddress: data.contractAddress,
-                cumulativeGasUsed: data.cumulativeGasUsed,
-                from: data.from,
-                gasUsed: data.gasUsed,
-                status: data.status,
-                to: data.to,
-                transactionHash: data.transactionHash,
-                transactionIndex: data.transactionIndex,
-                events: data.events,
-                logs: data.logs,
-                logsBloom: data.logsBloom,
-                root: (data as any).root,
-                type: (data as any).type
-            } as ITransactionReceipt;
+            return web3ReceiptToMaticReceipt(data);
         });
     }
 
@@ -111,7 +82,7 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.getBlock(blockHashOrBlockNumber, true).then(result => {
             const blockData: IBlockWithTransaction = result as any;
             blockData.transactions = result.transactions.map(tx => {
-                return this.toTransaction(tx);
+                return web3TxToMaticTx(tx);
             });
             return blockData;
         });

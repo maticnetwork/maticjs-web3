@@ -1,7 +1,8 @@
-import { BaseContractMethod, Logger, ITransactionConfig } from "@maticnetwork/maticjs";
+import { BaseContractMethod, Logger, ITransactionRequestConfig, Converter } from "@maticnetwork/maticjs";
 import Web3 from "web3";
 import { TransactionObject, Tx } from "web3/eth/types";
 import { doNothing } from "../helpers";
+import { maticTxRequestConfigToWeb3 } from "../utils";
 
 export class EthMethod extends BaseContractMethod {
 
@@ -9,31 +10,18 @@ export class EthMethod extends BaseContractMethod {
         super(logger);
     }
 
-    private toConfig_(config: ITransactionConfig = {}) {
-        return {
-            chainId: Web3.utils.toHex(config.chainId),
-            data: config.data,
-            from: config.from,
-            gas: config.gasLimit,
-            gasPrice: config.gasPrice,
-            nonce: config.nonce,
-            to: config.to,
-            value: config.value,
-            maxFeePerGas: config.maxFeePerGas,
-            maxPriorityFeePerGas: config.maxPriorityFeePerGas,
-            type: config['type'],
-            hardfork: config.hardfork
-        } as Tx;
+    toHex(value) {
+        return value != null ? Web3.utils.toHex(value) : value;
     }
 
-    read<T>(tx: ITransactionConfig): Promise<T> {
+    read<T>(tx: ITransactionRequestConfig): Promise<T> {
         this.logger.log("sending tx with config", tx);
         return this.method.call(
-            this.toConfig_(tx)
+            maticTxRequestConfigToWeb3(tx) as any
         );
     }
 
-    write(tx: ITransactionConfig) {
+    write(tx: ITransactionRequestConfig) {
         const result = {
             onTransactionHash: (doNothing as any),
             onReceipt: doNothing,
@@ -43,7 +31,7 @@ export class EthMethod extends BaseContractMethod {
         setTimeout(() => {
             this.logger.log("sending tx with config", tx);
             this.method.send(
-                this.toConfig_(tx)
+                maticTxRequestConfigToWeb3(tx) as any
             ).once("transactionHash", result.onTransactionHash).
                 once("receipt", result.onReceipt).
                 on("error", result.onTxError).
@@ -52,8 +40,10 @@ export class EthMethod extends BaseContractMethod {
         return result;
     }
 
-    estimateGas(tx: ITransactionConfig): Promise<number> {
-        return this.method.estimateGas(tx as any);
+    estimateGas(tx: ITransactionRequestConfig): Promise<number> {
+        return this.method.estimateGas(
+            maticTxRequestConfigToWeb3(tx) as any
+        );
     }
 
     encodeABI() {

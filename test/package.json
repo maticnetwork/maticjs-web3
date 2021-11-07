@@ -36,6 +36,6 @@
     "webpack-cli": "^4.2.0"
   },
   "dependencies": {
-    "@truffle/hdwallet-provider": "^1.5.1"
+    "@truffle/hdwallet-provider": "^1.5.1-alpha.1"
   }
 }
