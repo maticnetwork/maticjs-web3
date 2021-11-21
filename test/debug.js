@@ -57,8 +57,8 @@ const execute = async () => {
   // );
   // return console.log("tokens", tokens);
 
-  const tx = await goerliERC721Token.approveAll({
-    maxPriorityFeePerGas: 2000000000,
+  const tx = await goerliERC20Token.approveMax({
+    // maxPriorityFeePerGas: 2000000000,
     // returnTransaction: true
   });
 

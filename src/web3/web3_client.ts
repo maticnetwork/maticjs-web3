@@ -2,7 +2,7 @@ import { Web3Contract } from "./eth_contract";
 import Web3 from "web3";
 import { Transaction } from "web3/eth/types";
 import { AbstractProvider } from "web3-core";
-import { doNothing } from "../helpers";
+import { doNothing, TransactionWriteResult } from "../helpers";
 import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger } from "@maticnetwork/maticjs";
 import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx } from "../utils";
 
@@ -22,22 +22,11 @@ export class Web3Client extends BaseWeb3Client {
     }
 
     write(config: ITransactionRequestConfig) {
-        const result = {
-            onTransactionHash: (doNothing as any),
-            onReceipt: doNothing,
-            onReceiptError: doNothing,
-            onTxError: doNothing
-        };
-        setTimeout(() => {
-            this.logger.log("sending tx with config", config);
+        return new TransactionWriteResult(
             this.web3_.eth.sendTransaction(
                 maticTxRequestConfigToWeb3(config)
-            ).once("transactionHash", result.onTransactionHash).
-                once("receipt", result.onReceipt).
-                on("error", result.onTxError).
-                on("error", result.onReceiptError);
-        }, 0);
-        return result;
+            )
+        );
     }
 
     getContract(address: string, abi: any) {
