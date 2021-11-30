@@ -2,7 +2,7 @@ import { erc20, from, posClient, posClientForTo, to } from "./client";
 import { expect } from 'chai'
 import BN from "bn.js";
 import { maticTxRequestConfigToWeb3 } from "@maticnetwork/maticjs-web3";
-import { ITransactionConfig, ABIManager } from "@maticnetwork/maticjs";
+import { ITransactionRequestConfig, ABIManager } from "@maticnetwork/maticjs";
 import { Tx } from "web3/eth/types";
 import Web3 from "web3";
 
@@ -15,7 +15,6 @@ describe('ERC20', () => {
     const abiManager = new ABIManager("testnet", "mumbai");
     before(() => {
         return Promise.all([
-            posClient.init(),
             abiManager.init()
         ]);
     });
@@ -69,7 +68,7 @@ describe('ERC20', () => {
             hardfork: 'true',
             to: '12233',
             value: 1245
-        } as ITransactionConfig;
+        } as ITransactionRequestConfig;
 
         const config = maticTxRequestConfigToWeb3(txConfig);
 
@@ -90,10 +89,10 @@ describe('ERC20', () => {
         );
         expect(config.gas).equal(txConfig.gasLimit);
         expect(config.nonce).equal(txConfig.nonce);
-        expect(config.type).equal(
+        expect(config['type']).equal(
             Web3.utils.toHex(txConfig.type)
         );
-        expect(config.maxFeePerGas).equal(txConfig.maxFeePerGas);
+        expect(config['maxFeePerGas']).equal(txConfig.maxFeePerGas);
         expect(config.data).equal(txConfig.data);
         expect(config.gasPrice).equal(txConfig.gasPrice);
         expect(config.hardfork).equal(txConfig.hardfork);
@@ -196,7 +195,7 @@ describe('ERC20', () => {
 
 
     it('withdrawExit return tx', async () => {
-        const result: ITransactionConfig = await erc20Parent.withdrawExit('0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3', {
+        const result: ITransactionRequestConfig = await erc20Parent.withdrawExit('0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3', {
             returnTransaction: true
         }) as any;
 
@@ -222,7 +221,7 @@ describe('ERC20', () => {
 
         expect(txReceipt.transactionHash).equal(txHash);
         expect(txReceipt).to.be.an('object');
-        expect(txReceipt.from).equal(from);
+        expect(txReceipt.from.toLowerCase()).equal(from.toLowerCase());
         expect(txReceipt.to.toLowerCase()).equal(erc20.child.toLowerCase());
         expect(txReceipt.type).equal('0x0');
         expect(txReceipt.gasUsed).to.be.an('number').gt(0);
@@ -247,7 +246,6 @@ describe('ERC20', () => {
         )
 
         //transfer money back to user
-        await posClientForTo.init();
         const erc20ChildToken = posClientForTo.erc20(erc20.child);
 
         result = await erc20ChildToken.transfer(amount, to);

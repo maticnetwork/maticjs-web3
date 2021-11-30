@@ -32,10 +32,10 @@
     "web3": "^1.6.0"
   },
   "peerDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.16"
+    "@maticnetwork/maticjs": "^3.0.0"
   },
   "devDependencies": {
-    "@maticnetwork/maticjs": "^3.0.0-beta.16",
+    "@maticnetwork/maticjs": "^3.0.0",
     "@types/web3": "1.0.19",
     "copy-webpack-plugin": "^6.1.1",
     "cross-env": "^7.0.3",
