@@ -1,0 +1,17 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@maticnetwork/maticjs": "^3.0.0",
+    "@maticnetwork/maticjs-web3": "^1.0.0",
+    "@truffle/hdwallet-provider": "^1.5.1-alpha.1",
+    "dotenv": "^10.0.0"
+  }
+}

@@ -1,3 +1,4 @@
+[![npm version](https://badge.fury.io/js/@maticnetwork%2Fmaticjs-web3.svg)](https://badge.fury.io/js/@maticnetwork%2Fmaticjs-web3)
 # maticjs-web3
 
 [web3.js](https://web3js.readthedocs.io/) plugin for matic.js
@@ -7,6 +8,11 @@
 ```
 npm i @maticnetwork/maticjs-web3
 ```
+
+# Examples
+
+All the examples are in the examples folder.
+
 # Docs
 
 ```
