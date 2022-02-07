@@ -6,7 +6,7 @@ import HDWalletProvider from "@truffle/hdwallet-provider";
 describe('POS Client', () => {
 
     const abiManager = new ABIManager("testnet", "mumbai");
-    
+
 
     before(() => {
         return Promise.all([
@@ -52,5 +52,30 @@ describe('POS Client', () => {
                 }
             }
         });
+    })
+
+    const txHash = `0x92898987248eaec73dc56eee44f68084a2adcb13a83213590cce437d54aa17db`;
+    it("null tx check getTransactionReceipt", async () => {
+        try {
+            await posClient.client.parent.getTransactionReceipt(txHash);
+            throw "should have been error";
+        } catch (error) {
+            expect(error).eql({
+                type: 'invalid_transaction' as any,
+                message: 'Could not retrieve transaction. Either it is invalid or might be in archive node.'
+            });
+        }
+    })
+
+    it("null tx check getTransaction", async () => {
+        try {
+            await posClient.client.parent.getTransaction(txHash);
+            throw "should have been error";
+        } catch (error) {
+            expect(error).eql({
+                type: 'invalid_transaction' as any,
+                message: 'Could not retrieve transaction. Either it is invalid or might be in archive node.'
+            });
+        }
     })
 });

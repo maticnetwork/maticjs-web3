@@ -223,7 +223,7 @@ describe('ERC20', () => {
         expect(txReceipt).to.be.an('object');
         expect(txReceipt.from.toLowerCase()).equal(from.toLowerCase());
         expect(txReceipt.to.toLowerCase()).equal(erc20.child.toLowerCase());
-        expect(txReceipt.type).equal('0x0');
+        expect(txReceipt.type).equal('0x2');
         expect(txReceipt.gasUsed).to.be.an('number').gt(0);
         expect(txReceipt.cumulativeGasUsed).to.be.an('number').gt(0);
 

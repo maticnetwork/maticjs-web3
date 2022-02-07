@@ -3,7 +3,7 @@ import Web3 from "web3";
 import { Transaction } from "web3/eth/types";
 import { AbstractProvider } from "web3-core";
 import { doNothing, TransactionWriteResult } from "../helpers";
-import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger } from "@maticnetwork/maticjs";
+import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger, ERROR_TYPE, IError } from "@maticnetwork/maticjs";
 import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx } from "../utils";
 
 export class Web3Client extends BaseWeb3Client {
@@ -52,13 +52,25 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.net.getId();
     }
 
+    private ensureTransactionNotNull_(data) {
+        if (!data) {
+            throw {
+                type: 'invalid_transaction' as any,
+                message: 'Could not retrieve transaction. Either it is invalid or might be in archive node.'
+            } as IError;
+        }
+    }
+
     getTransaction(transactionHash: string) {
         return this.web3_.eth.getTransaction(transactionHash).then(data => {
+            this.ensureTransactionNotNull_(data);
             return web3TxToMaticTx(data);
         });
     }
+
     getTransactionReceipt(transactionHash: string): Promise<ITransactionReceipt> {
         return this.web3_.eth.getTransactionReceipt(transactionHash).then(data => {
+            this.ensureTransactionNotNull_(data);
             return web3ReceiptToMaticReceipt(data);
         });
     }

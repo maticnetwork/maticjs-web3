@@ -15,7 +15,10 @@ const execute = async () => {
   const mumbaiERC20 = pos.child.erc20;
   const goerliERC20 = pos.parent.erc20;
 
-  const client = new POSClient({
+  const client = new POSClient();
+
+
+  await client.init({
     log: true,
     network: 'testnet',
     version: 'mumbai',
@@ -32,9 +35,6 @@ const execute = async () => {
       }
     }
   });
-
-
-  await client.init();
   console.log("init called");
 
   const mumbaiERC20Token = client.erc20(mumbaiERC20);
@@ -42,7 +42,9 @@ const execute = async () => {
   const goerliERC721Token = client.erc721(pos.parent.erc721, true);
   const mumbaiERC721Token = client.erc721(pos.child.erc721);
 
+  const txReceipt = await client.client.parent.getTransactionReceipt('0x92898987248eaec73dc56eee44f68084a2adcb13a83213590cce437d54aa17db')
 
+  return console.log(txReceipt)
 
   // return console.log(await client.isDeposited('0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258'));
 
@@ -73,12 +75,12 @@ const execute = async () => {
 
   // console.log('tx', tx);
 
-//   const payload = await client.exitUtil.buildPayloadForExit(
-//     '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3',
-//     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
-//     false
-// )
-// return  //console.log("payload", payload, "length", payload.length);
+  //   const payload = await client.exitUtil.buildPayloadForExit(
+  //     '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3',
+  //     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef',
+  //     false
+  // )
+  // return  //console.log("payload", payload, "length", payload.length);
 
 
   // // setProofApi("https://apis.matic.network")
