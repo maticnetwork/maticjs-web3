@@ -93,7 +93,7 @@ export class Web3Client extends BaseWeb3Client {
         return new Promise<IJsonRpcResponse>((res, rej) => {
             (this.web3_.currentProvider as AbstractProvider).send(request, (error, result) => {
                 if (error) return rej(error);
-                res(result);
+                res(result as any);
             });
         });
     }

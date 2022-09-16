@@ -14,10 +14,10 @@ export class EthMethod extends BaseContractMethod {
         return value != null ? Web3.utils.toHex(value) : value;
     }
 
-    read<T>(tx: ITransactionRequestConfig): Promise<T> {
-        this.logger.log("sending tx with config", tx);
-        return this.method.call(
-            maticTxRequestConfigToWeb3(tx) as any
+    read<T>(tx: ITransactionRequestConfig, defaultBlock?: number | string): Promise<T> {
+        this.logger.log("sending tx with config", tx, defaultBlock);
+        return (this.method.call as any)(
+            maticTxRequestConfigToWeb3(tx) as any, defaultBlock
         );
     }
 
