@@ -109,4 +109,8 @@ export class Web3Client extends BaseWeb3Client {
     etheriumSha3(...value) {
         return Web3.utils.soliditySha3(...value);
     }
+
+    hexToNumber(value) {
+        return Web3.utils.hexToNumber(value);
+    }
 }
