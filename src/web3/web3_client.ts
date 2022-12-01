@@ -79,6 +79,10 @@ export class Web3Client extends BaseWeb3Client {
         return (this.web3_.eth.getBlock(blockHashOrBlockNumber) as any);
     }
 
+    getBalance(address) {
+        return this.web3_.eth.getBalance(address);
+    }
+
     getBlockWithTransaction(blockHashOrBlockNumber) {
         return this.web3_.eth.getBlock(blockHashOrBlockNumber, true).then(result => {
             const blockData: IBlockWithTransaction = result as any;
@@ -112,5 +116,9 @@ export class Web3Client extends BaseWeb3Client {
 
     hexToNumber(value) {
         return Web3.utils.hexToNumber(value);
+    }
+
+    hexToNumberString(value) {
+        return Web3.utils.hexToNumberString(value);
     }
 }
