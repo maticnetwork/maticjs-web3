@@ -8,6 +8,7 @@ import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx 
 
 export class Web3Client extends BaseWeb3Client {
     private web3_: Web3;
+    name = 'WEB3';
 
     constructor(provider: any, logger: Logger) {
         super(logger);
@@ -48,6 +49,10 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.getTransactionCount(address, blockNumber);
     }
 
+    getAccounts() {
+        return this.web3_.eth.getAccounts();
+    }
+
     getChainId() {
         return this.web3_.eth.net.getId();
     }
@@ -79,6 +84,10 @@ export class Web3Client extends BaseWeb3Client {
         return (this.web3_.eth.getBlock(blockHashOrBlockNumber) as any);
     }
 
+    getBalance(address) {
+        return this.web3_.eth.getBalance(address);
+    }
+
     getBlockWithTransaction(blockHashOrBlockNumber) {
         return this.web3_.eth.getBlock(blockHashOrBlockNumber, true).then(result => {
             const blockData: IBlockWithTransaction = result as any;
@@ -98,6 +107,17 @@ export class Web3Client extends BaseWeb3Client {
         });
     }
 
+    signTypedData(signer, typedData) {
+        return this.sendRPCRequest({
+            jsonrpc: '2.0',
+            method: 'eth_signTypedData_v4',
+            params: [signer, typedData],
+            id: new Date().getTime()
+        }).then(payload => {
+            return String(payload.result);
+        });
+    }
+
     encodeParameters(params: any[], types: any[]) {
         return this.web3_.eth.abi.encodeParameters(types, params);
     }
@@ -112,5 +132,9 @@ export class Web3Client extends BaseWeb3Client {
 
     hexToNumber(value) {
         return Web3.utils.hexToNumber(value);
+    }
+
+    hexToNumberString(value) {
+        return Web3.utils.hexToNumberString(value);
     }
 }
