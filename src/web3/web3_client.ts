@@ -8,6 +8,7 @@ import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx 
 
 export class Web3Client extends BaseWeb3Client {
     private web3_: Web3;
+    name = 'WEB3';
 
     constructor(provider: any, logger: Logger) {
         super(logger);
@@ -111,7 +112,7 @@ export class Web3Client extends BaseWeb3Client {
             jsonrpc: '2.0',
             method: 'eth_signTypedData_v4',
             params: [signer, typedData],
-            id: 1
+            id: new Date().getTime()
         }).then(payload => {
             return String(payload.result);
         });
