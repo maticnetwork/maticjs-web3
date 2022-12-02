@@ -48,6 +48,10 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.getTransactionCount(address, blockNumber);
     }
 
+    getAccounts() {
+        return this.web3_.eth.getAccounts();
+    }
+
     getChainId() {
         return this.web3_.eth.net.getId();
     }
@@ -99,6 +103,17 @@ export class Web3Client extends BaseWeb3Client {
                 if (error) return rej(error);
                 res(result as any);
             });
+        });
+    }
+
+    signTypedData(signer, typedData) {
+        return this.sendRPCRequest({
+            jsonrpc: '2.0',
+            method: 'eth_signTypedData_v4',
+            params: [signer, typedData],
+            id: 1
+        }).then(payload => {
+            return String(payload.result);
         });
     }
 
