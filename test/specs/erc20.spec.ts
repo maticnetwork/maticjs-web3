@@ -12,7 +12,7 @@ describe('ERC20', () => {
     let erc20Child = posClient.erc20(erc20.child);
     let erc20Parent = posClient.erc20(erc20.parent, true);
 
-    const abiManager = new ABIManager("testnet", "mumbai");
+    const abiManager = new ABIManager("testnet", "amoy");
     before(() => {
         return Promise.all([
             abiManager.init()

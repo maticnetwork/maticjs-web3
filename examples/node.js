@@ -21,7 +21,7 @@ const execute = async () => {
     await matic.init({
         // log: true,
         network: 'testnet',
-        version: 'mumbai',
+        version: 'amoy',
         parent: {
             provider: new HDWalletProvider(privateKey, rpc.root),
             defaultConfig: {

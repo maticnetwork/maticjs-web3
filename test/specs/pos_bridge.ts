@@ -5,7 +5,7 @@ import HDWalletProvider from "@truffle/hdwallet-provider";
 
 describe('POS Client', () => {
 
-    const abiManager = new ABIManager("testnet", "mumbai");
+    const abiManager = new ABIManager("testnet", "amoy");
 
 
     before(() => {
@@ -18,7 +18,7 @@ describe('POS Client', () => {
         await posClient.init({
             // log: true,
             network: 'testnet',
-            version: 'mumbai',
+            version: 'amoy',
             parent: {
                 provider: new HDWalletProvider(privateKey, RPC.parent),
                 defaultConfig: {
@@ -38,7 +38,7 @@ describe('POS Client', () => {
         await posClientForTo.init({
             // log: true,
             network: 'testnet',
-            version: 'mumbai',
+            version: 'amoy',
             parent: {
                 provider: new HDWalletProvider(toPrivateKey, RPC.parent),
                 defaultConfig: {

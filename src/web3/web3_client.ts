@@ -2,7 +2,7 @@ import { Web3Contract } from "./eth_contract";
 import Web3 from "web3";
 import { Transaction } from "web3/eth/types";
 import { AbstractProvider } from "web3-core";
-import { doNothing, TransactionWriteResult } from "../helpers";
+import { TransactionWriteResult } from "../helpers";
 import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger, ERROR_TYPE, IError } from "@maticnetwork/maticjs";
 import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx } from "../utils";
 

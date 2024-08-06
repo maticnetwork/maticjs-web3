@@ -1,6 +1,5 @@
 import { ITransactionReceipt } from "@maticnetwork/maticjs";
 
-
 export const web3ReceiptToMaticReceipt = (receipt: any) => {
     return {
         blockHash: receipt.blockHash,
@@ -19,5 +18,4 @@ export const web3ReceiptToMaticReceipt = (receipt: any) => {
         root: (receipt as any).root,
         type: (receipt as any).type
     } as ITransactionReceipt;
-
 };

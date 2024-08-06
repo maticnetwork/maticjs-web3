@@ -1,7 +1,7 @@
 import { BaseContractMethod, Logger, ITransactionRequestConfig, Converter } from "@maticnetwork/maticjs";
 import Web3 from "web3";
 import { TransactionObject, Tx } from "web3/eth/types";
-import { doNothing, TransactionWriteResult } from "../helpers";
+import { TransactionWriteResult } from "../helpers";
 import { maticTxRequestConfigToWeb3 } from "../utils";
 
 export class EthMethod extends BaseContractMethod {

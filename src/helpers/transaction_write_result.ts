@@ -1,6 +1,5 @@
 import { ITransactionWriteResult } from "@maticnetwork/maticjs";
 import { web3ReceiptToMaticReceipt } from "../utils";
-import { doNothing } from "./do_nothing";
 
 export class TransactionWriteResult implements ITransactionWriteResult {
 
@@ -38,6 +37,4 @@ export class TransactionWriteResult implements ITransactionWriteResult {
             on("error", this.onTransactionError).
             on("error", this.onTransactionReceiptError);
     }
-
-
 }

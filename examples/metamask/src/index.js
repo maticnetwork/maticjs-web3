@@ -27,7 +27,7 @@ window.onload = () => {
         await posClient.init({
             log: true,
             network: "testnet",
-            version: 'mumbai',
+            version: 'amoy',
             parent: {
                 provider: web3.currentProvider,
                 defaultConfig: {

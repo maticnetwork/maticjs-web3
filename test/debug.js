@@ -12,8 +12,8 @@ const execute = async () => {
 
 
   const privateKey = user1.privateKey;
-  const mumbaiERC20 = pos.child.erc20;
-  const goerliERC20 = pos.parent.erc20;
+  const childERC20 = pos.child.erc20;
+  const parentERC20 = pos.parent.erc20;
 
   const client = new POSClient();
 
@@ -21,7 +21,7 @@ const execute = async () => {
   await client.init({
     log: true,
     network: 'testnet',
-    version: 'mumbai',
+    version: 'amoy',
     parent: {
       provider: new HDWalletProvider(privateKey, rpc.parent),
       defaultConfig: {
@@ -37,8 +37,8 @@ const execute = async () => {
   });
   console.log("init called");
 
-  const mumbaiERC20Token = client.erc20(mumbaiERC20);
-  const goerliERC20Token = client.erc20(goerliERC20, true);
+  const childERC20Token = client.erc20(childERC20);
+  const parentERC20Token = client.erc20(parentERC20, true);
   const goerliERC721Token = client.erc721(pos.parent.erc721, true);
   const mumbaiERC721Token = client.erc721(pos.child.erc721);
 
@@ -49,7 +49,7 @@ const execute = async () => {
   // return console.log(await client.isDeposited('0xc67599f5c967f2040786d5924ec55d37bf943c009bdd23f3b50e5ae66efde258'));
 
 
-  // const balance = await mumbaiERC20Token.getBalance(
+  // const balance = await childERC20Token.getBalance(
   //   from
   // );
   // return console.log("balance", balance);
@@ -59,7 +59,7 @@ const execute = async () => {
   // );
   // return console.log("tokens", tokens);
 
-  const tx = await goerliERC20Token.approveMax({
+  const tx = await parentERC20Token.approveMax({
     // maxPriorityFeePerGas: 2000000000,
     // returnTransaction: true
   });
@@ -68,7 +68,7 @@ const execute = async () => {
   //   returnTransaction: true
   // });
   // setProofApi("https://apis.matic.network")
-  // const tx = await goerliERC20Token.withdrawExitFaster(
+  // const tx = await parentERC20Token.withdrawExitFaster(
   //   '0x1c20c41b9d97d1026aa456a21f13725df63edec1b1f43aacb180ebcc6340a2d3', {
   //   returnTransaction: true
   // });
@@ -84,7 +84,7 @@ const execute = async () => {
 
 
   // // setProofApi("https://apis.matic.network")
-  // // const tx = await goerliERC20Token.withdrawExit('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
+  // // const tx = await parentERC20Token.withdrawExit('0xd6f7f4c6052611761946519076de28fbd091693af974e7d4abc1b17fd7926fd7');
   console.log("txHash", await tx.getTransactionHash());
   console.log("txReceipt", await tx.getReceipt());
 

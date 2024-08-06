@@ -1,6 +1,5 @@
 import { BaseBigNumber } from "@maticnetwork/maticjs";
 import BN from "bn.js";
-import Web3 from "web3";
 
 export class MaticBigNumber extends BaseBigNumber {
     private bn_: BN;

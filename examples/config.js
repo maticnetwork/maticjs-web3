@@ -3,7 +3,7 @@
 module.exports = {
     rpc: {
         root: process.env.ROOT_RPC,
-        child: process.env.MATIC_RPC || 'https://rpc-mumbai.matic.today'
+        child: process.env.MATIC_RPC || 'https://rpc-amoy.polygon.technology'
     },
     pos: {
         parent: {
