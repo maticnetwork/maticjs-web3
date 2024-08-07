@@ -53,8 +53,16 @@ export class Web3Client extends BaseWeb3Client {
         return this.web3_.eth.getAccounts();
     }
 
-    getChainId() {
-        return this.web3_.eth.net.getId();
+    async getChainId() {
+        try {
+            const chainId = await this.web3_.eth.net.getId();
+            if (chainId) {
+                return chainId;
+            }
+            throw new Error('net_version is not enabled');
+        } catch (e) {
+            return this.web3_.eth.getChainId();
+        }
     }
 
     private ensureTransactionNotNull_(data) {

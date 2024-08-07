@@ -1,6 +1,6 @@
 {
   "name": "@maticnetwork/maticjs-web3",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "web3.js plugin for matic.js",
   "main": "dist/npm.export.js",
   "types": "dist/ts/index.d.ts",
