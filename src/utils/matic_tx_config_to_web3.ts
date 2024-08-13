@@ -1,6 +1,5 @@
 import { ITransactionRequestConfig } from "@maticnetwork/maticjs";
 import Web3 from "web3";
-import { TransactionConfig } from "web3-core";
 
 export const maticTxRequestConfigToWeb3 = (config: ITransactionRequestConfig = {}) => {
     const toHex = Web3.utils.toHex;
@@ -17,5 +16,5 @@ export const maticTxRequestConfigToWeb3 = (config: ITransactionRequestConfig = {
         maxPriorityFeePerGas: config.maxPriorityFeePerGas,
         type: toHex(config.type),
         hardfork: config.hardfork
-    } as TransactionConfig;
+    };
 };

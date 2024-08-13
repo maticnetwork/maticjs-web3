@@ -44,9 +44,9 @@ exports.default = {
         },
     },
     plugins: [
-        new copyPlugin({
-            patterns: [{ from: path.resolve('build_helper', 'npm.export.js'), to: '' }],
-        }),
-        new SmartBannerPlugin(banner)
+        // new copyPlugin({
+        //     patterns: [{ from: path.resolve('build_helper', 'npm.export.js'), to: '' }],
+        // }),
+        // new SmartBannerPlugin(banner)
     ],
 }

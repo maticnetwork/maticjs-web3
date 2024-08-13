@@ -1,9 +1,9 @@
+import Web3, {} from "web3";
+import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger, ERROR_TYPE, IError } from "@maticnetwork/maticjs";
+
 import { Web3Contract } from "./eth_contract";
-import Web3 from "web3";
-import { Transaction } from "web3/eth/types";
 import { AbstractProvider } from "web3-core";
 import { TransactionWriteResult } from "../helpers";
-import { BaseWeb3Client, IBlockWithTransaction, IJsonRpcRequestPayload, IJsonRpcResponse, ITransactionRequestConfig, ITransactionData, ITransactionReceipt, Logger, ERROR_TYPE, IError } from "@maticnetwork/maticjs";
 import { maticTxRequestConfigToWeb3, web3ReceiptToMaticReceipt, web3TxToMaticTx } from "../utils";
 
 export class Web3Client extends BaseWeb3Client {
@@ -36,7 +36,9 @@ export class Web3Client extends BaseWeb3Client {
     }
 
     getGasPrice() {
-        return this.web3_.eth.getGasPrice();
+        return this.web3_.eth.getGasPrice().then(price => {
+            return price.toString();
+        })
     }
 
     estimateGas(config: ITransactionRequestConfig) {
@@ -46,15 +48,21 @@ export class Web3Client extends BaseWeb3Client {
     }
 
     getTransactionCount(address: string, blockNumber: any) {
-        return this.web3_.eth.getTransactionCount(address, blockNumber);
+        return this.web3_.eth.getTransactionCount(address, blockNumber).then(count => {
+            return Number(count);
+        })
     }
 
     getAccounts() {
-        return this.web3_.eth.getAccounts();
+        return this.web3_.eth.getAccounts().then(accounts => {
+            return accounts;
+        });
     }
 
     getChainId() {
-        return this.web3_.eth.net.getId();
+        return this.web3_.eth.net.getId().then((chainId) => {
+            return Number(chainId);
+        });
     }
 
     private ensureTransactionNotNull_(data) {
@@ -85,7 +93,9 @@ export class Web3Client extends BaseWeb3Client {
     }
 
     getBalance(address) {
-        return this.web3_.eth.getBalance(address);
+        return this.web3_.eth.getBalance(address).then((balance) => {
+            return balance.toString();
+        });
     }
 
     getBlockWithTransaction(blockHashOrBlockNumber) {
@@ -131,7 +141,7 @@ export class Web3Client extends BaseWeb3Client {
     }
 
     hexToNumber(value) {
-        return Web3.utils.hexToNumber(value);
+        return Number(Web3.utils.hexToNumber(value).toString());
     }
 
     hexToNumberString(value) {

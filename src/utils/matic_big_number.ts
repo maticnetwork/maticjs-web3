@@ -1,5 +1,5 @@
 import { BaseBigNumber } from "@maticnetwork/maticjs";
-import BN from "bn.js";
+import BN  from "bignumber.js";
 
 export class MaticBigNumber extends BaseBigNumber {
     private bn_: BN;
@@ -15,7 +15,7 @@ export class MaticBigNumber extends BaseBigNumber {
         if (value instanceof MaticBigNumber) {
             return true;
         }
-        return BN.isBN(value);
+        return BN.isBigNumber(value);
     }
 
     toString(base?) {
@@ -26,30 +26,26 @@ export class MaticBigNumber extends BaseBigNumber {
         return this.bn_.toNumber();
     }
 
-    toBuffer(base?) {
-        return this.bn_.toBuffer();
-    }
-
     // static from(value) {
     //     return new MaticBigNumber(value);
     // }
 
     add(value: BaseBigNumber) {
-        const bn = this.bn_.add(
+        const bn = this.bn_.plus(
             new BN(value.toString())
         );
         return new MaticBigNumber(bn);
     }
 
     sub(value: BaseBigNumber) {
-        const bn = this.bn_.sub(
+        const bn = this.bn_.minus(
             new BN(value.toString())
         );
         return new MaticBigNumber(bn);
     }
 
     mul(value: BaseBigNumber) {
-        const bn = this.bn_.mul(
+        const bn = this.bn_.times(
             new BN(value.toString())
         );
         return new MaticBigNumber(bn);

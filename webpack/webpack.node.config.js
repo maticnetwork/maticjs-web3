@@ -1,8 +1,8 @@
-const webpackMerge = require("webpack-merge");
+const { merge } = require("webpack-merge");
 const { default: webpackBaseConfig, libraryName, isProd } = require("./webpack.base.config");
 var webpack = require('webpack');
 
-exports.default = webpackMerge(webpackBaseConfig, {
+exports.default = merge(webpackBaseConfig, {
     target: 'node',
     output: {
         filename: `${libraryName}.node${isProd ? '.min' : ''}.js`,
